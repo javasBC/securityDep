@@ -27,5 +27,15 @@ public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
     public PasswordEncoder getpassEncoder(){
         return NoOpPasswordEncoder.getInstance();
     }
+    
+      @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests()
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/user").hasAnyRole("USER","ADMIN")
+                .antMatchers("/").permitAll() //allow any user to connect to the page 
+                .and().formLogin();
+
+    }
 
 }
